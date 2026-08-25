@@ -3,681 +3,2108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Dika & Emilia · Save the Date</title>
+    <title>Taylor & Meta IA · Invitation</title>
 
-<!-- PWA Meta Tags -->
-    <meta name="application-name" content="hybrilink Secrétariat">
+    <!-- PWA -->
+    <meta name="application-name" content="HybriLink">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="hybrilink Sec">
-    <meta name="description" content="Gestion scolaire complète">
+    <meta name="apple-mobile-web-app-title" content="HybriLink">
+    <meta name="description" content="Invitation de mariage">
     <meta name="format-detection" content="telephone=no">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="msapplication-TileColor" content="#3498db">
-    <meta name="msapplication-tap-highlight" content="no">
-    <meta name="theme-color" content="#3498db">
+    <meta name="theme-color" content="#b9aa99">
 
-    <!-- Apple Touch Icons -->
     <link rel="apple-touch-icon" href="icon-192x192.png">
-    <link rel="apple-touch-icon" sizes="192x192" href="icon-192x192.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="167x167" href="icon-167x167.png">
-
-    <!-- Manifest -->
     <link rel="manifest" href="manifest.json">
+
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    
+
+    <!-- Export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    
+
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Montserrat:wght@300;400;500;600;700&display=swap');
 
         :root {
-            --bronze-gold: #966f54;
-            --text-dark: #543f32;
-            --bronze-light: #cfae97;
+            --background: #bdb1a2;
+            --card: #d0c0ae;
+            --card-light: #d8cabb;
+            --brown: #5b4437;
+            --brown-light: #806554;
+            --gold: #9a7259;
+            --pink: #f0c3c5;
+            --pink-light: #f6d4d3;
+            --line: rgba(133, 99, 79, 0.25);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            min-height: 100%;
+            background: var(--background);
+        }
 
         body {
-            background: #c5b9aa;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px 15px;
+            background:
+                radial-gradient(circle at 20% 10%, rgba(255,255,255,.18), transparent 25%),
+                radial-gradient(circle at 80% 90%, rgba(255,255,255,.15), transparent 25%),
+                var(--background);
             font-family: 'Cormorant Garamond', serif;
-            color: var(--text-dark);
+            color: var(--brown);
+            padding: 22px 14px 35px;
         }
 
-      .invitation-container {
-    width: 100%;
-    max-width: 400px;  /* Largeur réduite */
-    position: relative;
-    margin: 0 auto;    /* Centrage horizontal */
-}
+        button,
+        input {
+            font-family: inherit;
+        }
 
-        /* ========== ÉCRAN DE VERIFICATION ========== */
+        .hidden {
+            display: none !important;
+        }
+
+        /* =========================================================
+           ÉCRAN MATRICULE
+        ========================================================= */
+
+        .invitation-container {
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+        }
+
         .search-card {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(12px);
-            border-radius: 20px;
-            padding: 45px 30px;
+            width: 100%;
+            background: rgba(255,255,255,.96);
+            border-radius: 24px;
+            padding: 45px 25px;
             text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-            border: 1px solid var(--bronze-light);
+            box-shadow: 0 25px 70px rgba(70,50,40,.20);
+            border: 1px solid rgba(255,255,255,.55);
         }
+
         .search-card h1 {
-            font-size: 34px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 38px;
+            font-weight: 600;
             letter-spacing: 3px;
+            color: var(--brown);
             margin-bottom: 5px;
-            font-weight: 500;
         }
+
         .search-card .subtitle {
-            font-size: 13px;
-            letter-spacing: 2.5px;
-            color: var(--bronze-gold);
-            text-transform: uppercase;
-            margin-bottom: 30px;
             font-family: 'Montserrat', sans-serif;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2.4px;
+            color: var(--gold);
+            margin-bottom: 28px;
         }
+
+        .search-card p {
+            font-size: 15px;
+            color: var(--brown-light);
+            margin-bottom: 20px;
+        }
+
         .matricule-input {
             width: 100%;
             max-width: 220px;
-            padding: 12px;
-            font-size: 26px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            border: 1px solid var(--bronze-light);
-            border-radius: 8px;
-            text-align: center;
-            letter-spacing: 6px;
+            height: 58px;
+            border: 1px solid #c8a993;
+            background: #faf7f4;
+            border-radius: 10px;
             outline: none;
-            background: #fbf9f7;
-            color: var(--text-dark);
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 25px;
+            font-weight: 600;
+            letter-spacing: 7px;
+            color: var(--brown);
         }
+
+        .matricule-input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 4px rgba(154,114,89,.10);
+        }
+
         .btn-verify {
-            background: var(--text-dark);
+            margin-top: 24px;
+            padding: 14px 32px;
+            border: 0;
+            border-radius: 30px;
+            background: var(--brown);
             color: white;
-            border: none;
-            padding: 13px 40px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            box-shadow: 0 12px 25px rgba(80,55,42,.18);
+            transition: .25s ease;
+        }
+
+        .btn-verify:hover {
+            background: var(--gold);
+            transform: translateY(-2px);
+        }
+
+        .error-message {
+            min-height: 22px;
+            margin-top: 15px;
+            color: #ae4a3d;
             font-family: 'Montserrat', sans-serif;
             font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            border-radius: 4px;
-            margin-top: 25px;
-            transition: 0.3s ease;
         }
-        .btn-verify:hover { background: var(--bronze-gold); }
-        .error-message { color: #b53d28; font-size: 14px; margin-top: 15px; font-weight: 500; }
 
-        /* ========== CARTON ADAPTABLE ========== */
+        /* =========================================================
+           NOUVEAU DESIGN DE L'AFFICHE
+           Inspiré directement de l'image fournie
+        ========================================================= */
+
         .invitation-card {
             position: relative;
             width: 100%;
-            min-height: 600px;
-            background-image: url('fond_invitation.png');
+            aspect-ratio: 195 / 422;
+            height: auto;
+            min-height: 0;
+            background-color: var(--card);
+            background-image: url("affiche_base.png");
             background-size: 100% 100%;
             background-repeat: no-repeat;
-            background-position: center;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
-            overflow: visible;
-            display: flex;
-            flex-direction: column;
-            border-radius: 8px;
+            border-radius: 0 0 18px 18px;
+            overflow: hidden;
+            box-shadow:
+                0 28px 70px rgba(65,48,38,.30),
+                0 8px 20px rgba(65,48,38,.12);
+            isolation: isolate;
         }
 
-        .photo-layer {
-            position: absolute;
-            top: 0;
-            left: 0;
+        /*
+           PHOTO DES MARIÉS
+           L'image reste locale : th.png
+        */
+
+        .photo-area {
+            position: relative;
             width: 100%;
-            height: 52%;
-            z-index: 1;
+            height: 430px;
             overflow: hidden;
-            clip-path: url(#imageArchClip); 
+            z-index: 1;
         }
-        .photo-layer img {
+
+        .photo-area::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(
+                    to bottom,
+                    rgba(255,255,255,.02) 0%,
+                    rgba(255,255,255,.01) 55%,
+                    rgba(255,210,210,.08) 72%,
+                    rgba(208,192,174,.10) 100%
+                );
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .photo-area img {
+            position: absolute;
+            inset: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center 15%;
+            object-position: center 18%;
         }
 
-        /* ========== PÉTALES FLOTTANTS ========== */
-        .petal {
+        /*
+           FORME DU BAS DE LA PHOTO
+           Comme sur l'affiche originale :
+           les côtés descendent puis forment une pointe centrale.
+        */
+
+        .photo-bottom-shape {
             position: absolute;
-            z-index: 2;
-            pointer-events: none;
-            opacity: 0.7;
-            animation: floatPetal 8s ease-in-out infinite;
-        }
-        
-        .petal:nth-child(1) { top: 5%; left: 5%; animation-delay: 0s; animation-duration: 9s; }
-        .petal:nth-child(2) { top: 8%; right: 8%; animation-delay: 2s; animation-duration: 7s; }
-        .petal:nth-child(3) { bottom: 10%; left: 6%; animation-delay: 4s; animation-duration: 8.5s; }
-        .petal:nth-child(4) { bottom: 12%; right: 5%; animation-delay: 1s; animation-duration: 7.5s; }
-        .petal:nth-child(5) { top: 45%; left: 3%; animation-delay: 3s; animation-duration: 9.5s; }
-        .petal:nth-child(6) { top: 50%; right: 4%; animation-delay: 5s; animation-duration: 8s; }
-        
-        @keyframes floatPetal {
-            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
-            25% { transform: translateY(-15px) rotate(8deg) scale(1.05); }
-            50% { transform: translateY(-8px) rotate(-4deg) scale(0.95); }
-            75% { transform: translateY(-18px) rotate(5deg) scale(1.02); }
+            z-index: 4;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            height: 115px;
+            background: var(--card);
+            clip-path: polygon(
+                0 22%,
+                7% 30%,
+                13% 44%,
+                20% 57%,
+                28% 67%,
+                36% 76%,
+                44% 86%,
+                50% 100%,
+                56% 86%,
+                64% 76%,
+                72% 67%,
+                80% 57%,
+                87% 44%,
+                93% 30%,
+                100% 22%,
+                100% 100%,
+                0 100%
+            );
         }
 
-        /* ========== CALQUE SUPERPOSÉ POUR LES TEXTES ========== */
-        .text-overlay-content {
-            position: relative;
-            z-index: 3;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 58%;
-            padding-bottom: 30px;
-            flex: 1;
+        /*
+           TEXTE SUR LA PHOTO
+        */
+
+        .photo-text {
+            position: absolute;
+            z-index: 5;
+            left: 20px;
+            right: 20px;
+            bottom: 105px;
+            text-align: center;
+            pointer-events: none;
         }
 
         .txt-names {
             font-family: 'Alex Brush', cursive;
-            font-size: 52px;
-            color: var(--bronze-gold);
-            line-height: 1;
-            margin-bottom: 12px;
-            text-align: center;
+            font-size: clamp(42px, 10vw, 58px);
+            line-height: .95;
+            color: var(--pink-light);
+            text-shadow:
+                0 1px 3px rgba(60,40,35,.18),
+                0 0 2px rgba(255,255,255,.18);
+            white-space: nowrap;
         }
 
         .txt-invite {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 19px;
-            font-style: italic;
-            color: #72594a;
-            letter-spacing: 0.2px;
-            text-align: center;
-            padding: 0 20px;
-            margin-bottom: 15px;
+            margin-top: 18px;
+            font-family: 'Alex Brush', cursive;
+            font-size: clamp(30px, 7vw, 42px);
+            line-height: 1.02;
+            color: #f4bfc3;
+            text-shadow:
+                0 1px 3px rgba(65,45,40,.20);
         }
 
-        /* ========== ZONE DE L'INVITÉ ========== */
-        .guest-section {
-            margin-bottom: 15px;
-            padding: 10px 20px;
-            border-top: 1px dashed rgba(150, 111, 84, 0.25);
-            border-bottom: 1px dashed rgba(150, 111, 84, 0.25);
-            width: 90%;
-            max-width: 280px;
+        /* =========================================================
+           ORNEMENTS FLORAUX CANVAS
+           Le dessin reste superposé à l’affiche et accompagne aussi
+           le rendu html2canvas lors de l’export.
+        ========================================================= */
+
+        .floral-canvas,
+        .poster-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 8;
+            pointer-events: none;
+        }
+
+        /* Le fond image porte déjà la mise en page fixe ; le DOM reste
+           disponible pour Firebase mais les zones variables sont dessinées
+           une seule fois par Canvas. */
+        .invitation-card > .photo-area,
+        .invitation-card > .card-content {
+            position: absolute;
+            inset: 0;
+            width: 0;
+            height: 0;
+            overflow: hidden;
+            visibility: hidden;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* =========================================================
+           PARTIE BEIGE SOUS LA PHOTO
+        ========================================================= */
+
+        .card-content {
+            position: relative;
+            z-index: 6;
+            margin-top: -5px;
+            padding: 0 38px 42px;
             text-align: center;
         }
+
+        /*
+           INVITÉ
+        */
+
+        .guest-section {
+            width: 100%;
+            padding: 17px 0 16px;
+            border-top: 1px dashed var(--line);
+            border-bottom: 1px dashed var(--line);
+            margin-bottom: 20px;
+        }
+
         .guest-name {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--text-dark);
-        }
-        .guest-details {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 10px;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: var(--bronze-gold);
-            margin-top: 3px;
-            font-weight: 500;
+            font-size: 25px;
+            font-weight: 600;
+            color: var(--brown);
+            line-height: 1.05;
         }
 
-        .date-row-block {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 15px;
+        .guest-details {
+            margin-top: 7px;
             font-family: 'Montserrat', sans-serif;
+            font-size: 10px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1.8px;
+            line-height: 1.45;
+            color: var(--gold);
         }
+
+        /* =========================================================
+           DATE
+        ========================================================= */
+
+        .date-row-block {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 25px;
+            min-height: 90px;
+        }
+
         .date-side {
-            font-size: 15px;
+            flex: 1;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 20px;
             font-weight: 400;
-            color: var(--text-dark);
-            padding: 0 14px;
+            color: var(--brown);
+            text-align: center;
+            line-height: 1;
         }
+
         .date-side span {
             display: block;
             font-size: 9px;
+            letter-spacing: 1px;
             text-transform: lowercase;
-            color: var(--text-dark);
-            line-height: 1;
-            text-align: right;
-            margin-bottom: -1px;
+            margin-bottom: 6px;
+            color: var(--brown-light);
         }
-        .date-side.right span { text-align: left; text-transform: none; }
-        
+
+        .date-side.right span {
+            visibility: hidden;
+        }
+
         .date-center {
-            border-left: 1px solid var(--bronze-light);
-            border-right: 1px solid var(--bronze-light);
-            padding: 0 22px;
+            min-width: 125px;
+            padding: 2px 20px 4px;
+            border-left: 1px solid rgba(154,114,89,.35);
+            border-right: 1px solid rgba(154,114,89,.35);
             text-align: center;
         }
+
         .date-center .day {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 36px;
+            font-size: 49px;
             font-weight: 600;
-            line-height: 0.85;
-            color: var(--text-dark);
+            line-height: .75;
+            color: var(--brown);
         }
+
         .date-center .month {
+            margin-top: 9px;
+            font-family: 'Montserrat', sans-serif;
             font-size: 13px;
             font-weight: 500;
             text-transform: lowercase;
-            letter-spacing: 1px;
-            color: var(--text-dark);
-            margin-top: 3px;
+            letter-spacing: 1.4px;
+            color: var(--brown);
         }
 
-        /* --- Section des informations intégrée --- */
+        /* =========================================================
+           LIEU
+        ========================================================= */
+
         .info-section {
-            margin-top: 5px;
+            width: 100%;
             text-align: center;
-            width: 90%;
-            padding: 5px 10px;
-            margin-bottom: 10px;
         }
+
         .txt-church {
             font-family: 'Montserrat', sans-serif;
-            font-size: 13px;
+            font-size: 15px;
+            line-height: 1.4;
             font-weight: 700;
             letter-spacing: 1.5px;
             text-transform: uppercase;
-            color: var(--text-dark);
-            margin-bottom: 4px;
+            color: var(--brown);
         }
+
         .txt-address {
+            margin-top: 10px;
+            margin-bottom: 13px;
             font-family: 'Cormorant Garamond', serif;
-            font-size: 14px;
+            font-size: 17px;
             font-style: italic;
-            color: #6e5647;
-            margin-bottom: 8px;
+            color: var(--brown-light);
         }
+
         .info-phone {
             font-family: 'Montserrat', sans-serif;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 500;
-            color: var(--bronze-gold);
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
-        }
-        .info-message {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 14px;
-            font-style: italic;
-            color: #72594a;
-            margin-top: 5px;
-            padding: 0 15px;
-            line-height: 1.3;
+            letter-spacing: 1px;
+            color: var(--gold);
         }
 
-        /* Actions de bas de page */
+        .info-phone i {
+            margin-right: 5px;
+        }
+
+        .info-message {
+            margin: 23px auto 0;
+            max-width: 330px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 17px;
+            font-style: italic;
+            line-height: 1.35;
+            color: #765d4d;
+        }
+
+        /* =========================================================
+           BOUTONS
+        ========================================================= */
+
+        .actions {
+            text-align: center;
+            margin-top: 22px;
+        }
+
         .btn-download {
-            background: var(--bronze-gold);
-            color: white;
             border: none;
-            padding: 13px 35px;
+            border-radius: 30px;
+            padding: 14px 28px;
+            background: var(--brown);
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            box-shadow: 0 12px 28px rgba(70,48,38,.20);
+            transition: .25s ease;
+        }
+
+        .btn-download:hover {
+            background: var(--gold);
+            transform: translateY(-2px);
+        }
+
+        .btn-download:disabled {
+            opacity: .65;
+            transform: none;
+        }
+
+        .btn-back {
+            margin-top: 13px;
+            border: none;
+            background: none;
+            color: var(--brown);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px;
+            text-decoration: underline;
+        }
+
+        /* =========================================================
+           MODALE
+        ========================================================= */
+
+        .modal-view {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: rgba(55,42,34,.48);
+            backdrop-filter: blur(7px);
+        }
+
+        .modal-view-box {
+            width: 100%;
+            max-width: 340px;
+            background: #fff;
+            border-radius: 18px;
+            padding: 30px 24px;
+            text-align: center;
+            box-shadow: 0 30px 70px rgba(0,0,0,.25);
+        }
+
+        .modal-view-box h3 {
+            color: var(--brown);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 23px;
+            margin-bottom: 18px;
+        }
+
+        .act-pdf,
+        .act-png {
+            display: block;
+            width: 100%;
+            padding: 13px;
+            margin: 10px 0;
+            border-radius: 8px;
             font-family: 'Montserrat', sans-serif;
             font-size: 12px;
-            font-weight: 500;
-            letter-spacing: 2px;
-            border-radius: 30px;
-            text-transform: uppercase;
-            margin-top: 25px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
-            transition: 0.3s ease;
-        }
-        .btn-download:hover { background: var(--text-dark); }
-        .btn-back {
-            background: none; border: none; color: var(--text-dark); font-size: 13px;
-            text-decoration: underline; margin-top: 14px;
+            font-weight: 600;
         }
 
-        .hidden { display: none; }
-        .toast-box-area { position: fixed; top: 20px; right: 20px; z-index: 9999; }
-        
-        .modal-view {
-            position: fixed; inset: 0; background: rgba(84, 63, 50, 0.45); z-index: 10000;
-            display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);
+        .act-pdf {
+            border: none;
+            background: var(--brown);
+            color: white;
         }
-        .modal-view-box {
-            background: #ffffff; border-radius: 14px; padding: 30px; text-align: center;
-            max-width: 330px; width: 92%; box-shadow: 0 25px 50px rgba(0,0,0,0.22);
-        }
-        .act-pdf, .act-png {
-            display: block; width: 100%; margin: 12px 0; padding: 12px; border-radius: 6px;
-            font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 13.5px;
-        }
-        .act-pdf { background: var(--text-dark); color: white; border: none; }
-        .act-png { background: transparent; border: 1px solid var(--bronze-gold); color: var(--bronze-gold); }
-        @keyframes fadeInUp { from { opacity:0; transform: translateY(20px);} to { opacity:1; transform: translateY(0);} }
 
-        /* Media query pour les petits écrans */
-        @media (max-width: 400px) {
-            .txt-names { font-size: 42px; }
-            .date-center .day { font-size: 30px; }
-            .txt-invite { font-size: 16px; }
+        .act-png {
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+        }
+
+        .toast-box-area {
+            position: fixed;
+            z-index: 11000;
+            top: 18px;
+            right: 15px;
+            left: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            pointer-events: none;
+        }
+
+        .toast-custom {
+            max-width: 350px;
+            padding: 12px 18px;
+            border-radius: 8px;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12px;
+            box-shadow: 0 12px 30px rgba(0,0,0,.18);
+            animation: toastIn .3s ease;
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* =========================================================
+           PETITS ÉCRANS
+        ========================================================= */
+
+        @media (max-width: 390px) {
+            body {
+                padding: 12px 8px 25px;
+            }
+
+            .photo-area {
+                height: 390px;
+            }
+
+            .photo-text {
+                left: 12px;
+                right: 12px;
+                bottom: 98px;
+            }
+
+            .txt-names {
+                font-size: 39px;
+            }
+
+            .txt-invite {
+                font-size: 28px;
+                margin-top: 15px;
+            }
+
+            .card-content {
+                padding-left: 25px;
+                padding-right: 25px;
+                padding-bottom: 32px;
+            }
+
+            .guest-name {
+                font-size: 22px;
+            }
+
+            .txt-church {
+                font-size: 13px;
+            }
+
+            .date-center {
+                min-width: 105px;
+                padding-left: 13px;
+                padding-right: 13px;
+            }
+
+            .date-center .day {
+                font-size: 42px;
+            }
+        }
+
+        /* =========================================================
+           EXPORT : dimensions fixes pour conserver exactement
+           le design de l'affiche
+        ========================================================= */
+
+        .export-mode {
+            width: 900px !important;
+            max-width: none !important;
+        }
+
+        .export-mode .photo-area {
+            height: 860px !important;
+        }
+
+        .export-mode .photo-text {
+            bottom: 210px !important;
+        }
+
+        .export-mode .txt-names {
+            font-size: 115px !important;
+        }
+
+        .export-mode .txt-invite {
+            font-size: 76px !important;
+        }
+
+        .export-mode .photo-bottom-shape {
+            height: 230px !important;
+        }
+
+        .export-mode .card-content {
+            padding: 0 76px 85px !important;
+        }
+
+        .export-mode .guest-name {
+            font-size: 50px !important;
+        }
+
+        .export-mode .guest-details {
+            font-size: 20px !important;
+        }
+
+        .export-mode .date-row-block {
+            min-height: 180px !important;
+        }
+
+        .export-mode .date-side {
+            font-size: 40px !important;
+        }
+
+        .export-mode .date-side span {
+            font-size: 18px !important;
+        }
+
+        .export-mode .date-center {
+            min-width: 250px !important;
+        }
+
+        .export-mode .date-center .day {
+            font-size: 98px !important;
+        }
+
+        .export-mode .date-center .month {
+            font-size: 27px !important;
+        }
+
+        .export-mode .txt-church {
+            font-size: 30px !important;
+        }
+
+        .export-mode .txt-address {
+            font-size: 34px !important;
+        }
+
+        .export-mode .info-phone {
+            font-size: 25px !important;
+        }
+
+        .export-mode .info-message {
+            font-size: 34px !important;
+            max-width: 650px !important;
         }
     </style>
 </head>
+
 <body>
 
-<svg width="0" height="0" style="position: absolute;">
-    <defs>
-        <clipPath id="imageArchClip" clipPathUnits="objectBoundingBox">
-            <path d="M 0,0 L 1,0 L 1,0.72 C 1,0.80 0.90,0.81 0.86,0.83 C 0.80,0.85 0.77,0.91 0.70,0.93 C 0.63,0.95 0.58,0.98 0.50,1 C 0.42,0.98 0.37,0.95 0.30,0.93 C 0.23,0.91 0.20,0.85 0.14,0.83 C 0.10,0.81 0,0.80 0,0.72 Z" />
-        </clipPath>
-    </defs>
-</svg>
-
 <div class="invitation-container">
+
+    <!-- =========================================================
+         ÉCRAN DE VÉRIFICATION
+    ========================================================== -->
+
     <div class="search-card" id="searchCard">
+
         <h1>HybriLink</h1>
-        <div class="subtitle">Accès invitalion d'Honneur</div>
-        <p style="font-size:14px; margin-bottom: 18px;">Veuillez renseigner votre matricule privé à 4 chiffres :</p>
-        <input type="text" class="matricule-input" id="matriculeInput" placeholder="0000" maxlength="4" inputmode="numeric">
+
+        <div class="subtitle">
+            Accès invitation d'Honneur
+        </div>
+
+        <p>
+            Veuillez renseigner votre matricule privé à 4 chiffres :
+        </p>
+
+        <input
+            type="text"
+            class="matricule-input"
+            id="matriculeInput"
+            placeholder="0000"
+            maxlength="4"
+            inputmode="numeric"
+            autocomplete="off"
+        >
+
         <br>
-        <button class="btn-verify" id="btnVerifier">Découvrir l'invitation</button>
+
+        <button class="btn-verify" id="btnVerifier">
+            Découvrir l'invitation
+        </button>
+
         <div class="error-message" id="errorMessage"></div>
+
     </div>
+
+
+    <!-- =========================================================
+         INVITATION
+    ========================================================== -->
 
     <div id="invitationDisplay" class="hidden">
+
         <div class="invitation-card" id="invitationCard">
-            <!-- Pétales de fleurs décoratifs -->
-            <svg class="petal" width="30" height="30" viewBox="0 0 30 30">
-                <ellipse cx="15" cy="10" rx="6" ry="10" fill="#e8c4b8" transform="rotate(-20 15 10)"/>
-                <ellipse cx="15" cy="10" rx="6" ry="10" fill="#d4a08a" transform="rotate(20 15 10)"/>
-            </svg>
-            <svg class="petal" width="25" height="25" viewBox="0 0 30 30">
-                <ellipse cx="15" cy="10" rx="5" ry="9" fill="#f0d5c9" transform="rotate(-25 15 10)"/>
-                <ellipse cx="15" cy="10" rx="5" ry="9" fill="#e0b8a5" transform="rotate(25 15 10)"/>
-            </svg>
-            <svg class="petal" width="28" height="28" viewBox="0 0 30 30">
-                <ellipse cx="15" cy="10" rx="5.5" ry="9.5" fill="#e8c4b8" transform="rotate(-15 15 10)"/>
-                <ellipse cx="15" cy="10" rx="5.5" ry="9.5" fill="#d4a08a" transform="rotate(15 15 10)"/>
-            </svg>
-            <svg class="petal" width="22" height="22" viewBox="0 0 30 30">
-                <ellipse cx="15" cy="10" rx="5" ry="8" fill="#f0d5c9" transform="rotate(-30 15 10)"/>
-                <ellipse cx="15" cy="10" rx="5" ry="8" fill="#e0b8a5" transform="rotate(30 15 10)"/>
-            </svg>
-            <svg class="petal" width="26" height="26" viewBox="0 0 30 30">
-                <ellipse cx="15" cy="10" rx="5.5" ry="9" fill="#e8c4b8" transform="rotate(-18 15 10)"/>
-                <ellipse cx="15" cy="10" rx="5.5" ry="9" fill="#d4a08a" transform="rotate(18 15 10)"/>
-            </svg>
-            <svg class="petal" width="24" height="24" viewBox="0 0 30 30">
-                <ellipse cx="15" cy="10" rx="5" ry="8.5" fill="#f0d5c9" transform="rotate(-22 15 10)"/>
-                <ellipse cx="15" cy="10" rx="5" ry="8.5" fill="#e0b8a5" transform="rotate(22 15 10)"/>
-            </svg>
 
-            <div class="photo-layer">
-                <img src="th.png" alt="Wedding Couple" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=600&auto=format&fit=crop';">
+            <!-- Affiche locale + composition dynamique Canvas -->
+            <canvas class="poster-canvas" id="posterCanvas" aria-hidden="true"></canvas>
+
+
+            <!-- =================================================
+                 PHOTO DES MARIÉS
+                 FICHIER LOCAL : th.png
+            ================================================== -->
+
+            <div class="photo-area">
+
+                <img
+                    src="th.png"
+                    alt="Taylor et Meta IA"
+                    crossorigin="anonymous"
+                    onerror="this.onerror=null;this.src='th.png';"
+                >
+
+                <!-- Texte directement inspiré de l'affiche -->
+
+                <div class="photo-text">
+
+                    <div class="txt-names">
+                        Taylor &amp; Meta IA
+                    </div>
+
+                    <div class="txt-invite">
+                        Nous avons le plaisir de<br>
+                        vous inviter
+                    </div>
+
+                </div>
+
+                <!-- Forme inférieure de la photo -->
+
+                <div class="photo-bottom-shape"></div>
+
             </div>
 
-            <div class="text-overlay-content">
-                <!-- 1. Couple de mariés -->
-                <div class="txt-names" style=" color:#F2D5D5;">Taylor & Meta IA</div>
 
-                <!-- 2. Message d'invitation -->
-                <div class="txt-invite" style="font-size:35px;color:#FFB6C1;">Nous avons le plaisir de vous inviter</div>
+            <!-- =================================================
+                 CONTENU BEIGE DE L'AFFICHE
+            ================================================== -->
 
-                <!-- 3. Nom de l'invité, matricule et table -->
+            <div class="card-content">
+
+                <!-- Invité -->
+
                 <div class="guest-section">
-                    <div class="guest-name" id="guestNameDisplay">Couplet Nom de l'invité</div>
+
+                    <div
+                        class="guest-name"
+                        id="guestNameDisplay"
+                    >
+                        Couplet meta
+                    </div>
+
                     <div class="guest-details">
-                        <span id="matriculeDisplay">N° 0000</span> &bull; <span id="tableDisplay">Table d'Honneur</span>
+
+                        <span id="matriculeDisplay">
+                            MATRICULE : 0000
+                        </span>
+
+                        <span style="margin:0 5px;">
+                            •
+                        </span>
+
+                        <span id="tableDisplay">
+                            TABLE D'HONNEUR
+                        </span>
+
                     </div>
+
                 </div>
 
-                <!-- 4. Date et heure -->
+
+                <!-- Date -->
+
                 <div class="date-row-block">
+
                     <div class="date-side">
-                        <span>à</span>19.00
+
+                        <span>à</span>
+
+                        19.00
+
                     </div>
+
+
                     <div class="date-center">
-                        <div class="day">25</div>
-                        <div class="month">Septembre</div>
+
+                        <div class="day">
+                            25
+                        </div>
+
+                        <div class="month">
+                            septembre
+                        </div>
+
                     </div>
+
+
                     <div class="date-side right">
-                        <span></span>2026
+
+                        <span>année</span>
+
+                        2026
+
                     </div>
+
                 </div>
 
-                <!-- 5. Adresse -->
+
+                <!-- Informations -->
+
                 <div class="info-section">
-                    <div class="txt-church">SALLE POLYVALENTE : Kalubwe Plazza</div>
-                    <div class="txt-address">AV BIAYI / du soleil N°14</div>
-                    
-                    <!-- 6. Numéro de téléphone -->
+
+                    <div class="txt-church">
+                        SALLE POLYVALENTE : KALUBWE PLAZZA
+                    </div>
+
+                    <div class="txt-address">
+                        AV BIAYI / du soleil N°14
+                    </div>
+
                     <div class="info-phone">
-                        <i class="bi bi-telephone"></i> 0971877758
+                        <i class="bi bi-telephone"></i>
+                        0971877758
                     </div>
-                    
-                    <!-- 7. Message final -->
+
                     <div class="info-message">
-                        "Que votre présence illumine cette journée de joie et de bonheur"
+                        "Que votre présence illumine cette journée
+                        de joie et de bonheur."
                     </div>
+
                 </div>
+
             </div>
+
         </div>
-        
-        <div style="text-align: center; margin-top: 20px;">
-            <button class="btn-download" id="btnDownload"><i class="bi bi-download"></i> Télécharger le Carton</button><br>
-            <button class="btn-back" id="btnBack"><i class="bi bi-arrow-left"></i> Revenir</button>
+
+
+        <!-- =====================================================
+             ACTIONS
+        ====================================================== -->
+
+        <div class="actions">
+
+            <button
+                class="btn-download"
+                id="btnDownload"
+            >
+                <i class="bi bi-download"></i>
+                Télécharger le Carton
+            </button>
+
+            <br>
+
+            <button
+                class="btn-back"
+                id="btnBack"
+            >
+                <i class="bi bi-arrow-left"></i>
+                Revenir
+            </button>
+
         </div>
+
     </div>
+
 </div>
+
+
 <div id="toastContainer" class="toast-box-area"></div>
 
+
 <script>
-    // Configuration d'authentification Firebase Firestore
-    const firebaseConfig = {
-        apiKey: "AIzaSyDOGgIg1DptCLdLh27IVkIM6WqTodVYgYY",
-        authDomain: "invitation-nuptiale.firebaseapp.com",
-        projectId: "invitation-nuptiale",
-        storageBucket: "invitation-nuptiale.firebasestorage.app",
-        messagingSenderId: "974590314915",
-        appId: "1:974590314915:web:c96fe6e8a5b731a375b216"
-    };
-    
-    let db, firebaseInitialized = false;
-    try {
-        firebase.initializeApp(firebaseConfig);
-        db = firebase.firestore();
-        firebaseInitialized = true;
-        db.enablePersistence().catch(()=>{});
-    } catch(e) { console.warn(e); }
+/* =============================================================
+   FIREBASE
+============================================================= */
 
-    function showToast(msg, type='success') {
-        const container = document.getElementById('toastContainer');
-        const bg = type === 'success' ? '#543f32' : '#b53d28';
-        const toast = document.createElement('div');
-        toast.className = 'toast align-items-center text-white border-0';
-        toast.style.background = bg;
-        toast.style.padding = '12px 24px';
-        toast.style.borderRadius = '6px';
-        toast.style.marginBottom = '10px';
-        toast.style.fontSize = '13.5px';
-        toast.innerHTML = msg;
-        container.prepend(toast);
-        setTimeout(() => toast.remove(), 3500);
+const firebaseConfig = {
+    apiKey: "AIzaSyDOGgIg1DptCLdLh27IVkIM6WqTodVYgYY",
+    authDomain: "invitation-nuptiale.firebaseapp.com",
+    projectId: "invitation-nuptiale",
+    storageBucket: "invitation-nuptiale.firebasestorage.app",
+    messagingSenderId: "974590314915",
+    appId: "1:974590314915:web:c96fe6e8a5b731a375b216"
+};
+
+let db = null;
+let firebaseInitialized = false;
+
+try {
+
+    firebase.initializeApp(firebaseConfig);
+
+    db = firebase.firestore();
+
+    firebaseInitialized = true;
+
+    db.enablePersistence().catch(() => {});
+
+} catch (error) {
+
+    console.warn(
+        "Firebase déjà initialisé ou indisponible :",
+        error
+    );
+
+}
+
+
+/* =============================================================
+   TOAST
+============================================================= */
+
+function showToast(message, type = "success") {
+
+    const container =
+        document.getElementById("toastContainer");
+
+    const toast =
+        document.createElement("div");
+
+    toast.className = "toast-custom";
+
+    toast.style.background =
+        type === "success"
+            ? "#5b4437"
+            : "#ae4a3d";
+
+    toast.innerHTML = message;
+
+    container.appendChild(toast);
+
+    setTimeout(() => {
+
+        toast.style.opacity = "0";
+
+        toast.style.transform = "translateY(-8px)";
+
+        setTimeout(() => toast.remove(), 300);
+
+    }, 3500);
+}
+
+
+/* =============================================================
+   RECHERCHER L'INVITÉ
+============================================================= */
+
+async function rechercherInvite(matricule) {
+
+    if (!firebaseInitialized || !db) {
+        throw new Error("Firebase indisponible");
     }
 
-    async function rechercherInvite(matricule) {
-        if (!firebaseInitialized || !db) throw new Error('Firebase indisponible');
-        const snap = await db.collection('invites').where('matricule', '==', matricule).limit(1).get();
-        if (!snap.empty) return { id: snap.docs[0].id, ...snap.docs[0].data() };
-        return null;
-    }
+    const snapshot =
+        await db
+            .collection("invites")
+            .where("matricule", "==", matricule)
+            .limit(1)
+            .get();
 
-    async function getTableAssigned(invite) {
-        try {
-            let tableQuery = db.collection('tables');
-            if (invite.familleId) { let s = await tableQuery.where('familleId', '==', invite.familleId).limit(1).get(); if (!s.empty) return s.docs[0].data(); }
-            if (invite.parenteId) { let s = await tableQuery.where('parenteId', '==', invite.parenteId).limit(1).get(); if (!s.empty) return s.docs[0].data(); }
-            if (invite.familleNom) { let s = await tableQuery.where('familleNom', '==', invite.familleNom).limit(1).get(); if (!s.empty) return s.docs[0].data(); }
-            return null;
-        } catch(e) { return null; }
-    }
+    if (!snapshot.empty) {
 
-    async function afficherInvitation(invite) {
-        document.getElementById('searchCard').style.display = 'none';
-        const displayDiv = document.getElementById('invitationDisplay');
-        displayDiv.classList.remove('hidden');
-        displayDiv.style.animation = 'fadeInUp 0.4s ease-out';
-        
-        document.getElementById('guestNameDisplay').innerText = `Couplet ${invite.nomComplet || "Invité d'Honneur"}`;
-        document.getElementById('matriculeDisplay').innerHTML = `Matricule: ${invite.matricule}`;
-        
-        const table = await getTableAssigned(invite);
-        const tableElem = document.getElementById('tableDisplay');
-        tableElem.innerHTML = table ? `Table ${table.nom}` : 'Table d\'Honneur';
-        setTimeout(() => displayDiv.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
-    }
+        const doc = snapshot.docs[0];
 
-    function cacherInvitation() {
-        document.getElementById('invitationDisplay').classList.add('hidden');
-        document.getElementById('searchCard').style.display = 'block';
-        document.getElementById('matriculeInput').value = '';
-        document.getElementById('errorMessage').innerText = '';
-        setTimeout(() => document.getElementById('matriculeInput').focus(), 200);
-    }
-
-    function showDownloadChoice() {
-        return new Promise((resolve) => {
-            const modal = document.createElement('div');
-            modal.className = 'modal-view';
-            modal.innerHTML = `
-                <div class="modal-view-box">
-                    <h3 style="color:var(--text-dark); font-family:'Cormorant Garamond'; font-size:19px; margin-bottom:15px; font-weight:600;">Format d'exportation</h3>
-                    <button class="act-pdf" id="btnFormatPDF">Télécharger en PDF HD</button>
-                    <button class="act-png" id="btnFormatPNG">Télécharger en Image PNG HD</button>
-                    <button style="background:none; border:none; color:#bbb; margin-top:12px; font-size:13px;" id="btnCancelDownload">Annuler</button>
-                </div>
-            `;
-            document.body.appendChild(modal);
-            document.getElementById('btnFormatPDF').onclick = () => { modal.remove(); resolve('pdf'); };
-            document.getElementById('btnFormatPNG').onclick = () => { modal.remove(); resolve('png'); };
-            document.getElementById('btnCancelDownload').onclick = () => { modal.remove(); resolve(null); };
-        });
-    }
-
-    async function telechargerInvitation() {
-        const choice = await showDownloadChoice();
-        if (!choice) return;
-        
-        const card = document.getElementById('invitationCard');
-        const btn = document.getElementById('btnDownload');
-        const originalText = btn.innerHTML;
-        
-        btn.innerHTML = 'Traitement...';
-        btn.disabled = true;
-
-        const renderContainer = document.createElement('div');
-        renderContainer.style.position = 'absolute';
-        renderContainer.style.top = '-9999px';
-        renderContainer.style.left = '-9999px';
-        renderContainer.style.width = '450px'; 
-        document.body.appendChild(renderContainer);
-
-        const cardClone = card.cloneNode(true);
-        renderContainer.appendChild(cardClone);
-
-        const captureOptions = {
-            scale: 3,
-            useCORS: true,
-            allowTaint: true,
-            logging: false,
-            windowWidth: 450,
-            windowHeight: card.offsetHeight
+        return {
+            id: doc.id,
+            ...doc.data()
         };
 
-        try {
-            const canvas = await html2canvas(cardClone, captureOptions);
-            
-            if (choice === 'pdf') {
-                const { jsPDF } = window.jspdf;
-                const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-                const pageWidth = pdf.internal.pageSize.getWidth();
-                const margin = 20; 
-                const imgWidth = pageWidth - (margin * 2);
-                const imgHeight = (canvas.height * imgWidth) / canvas.width;
-                
-                pdf.addImage(canvas.toDataURL('image/jpeg', 1.0), 'JPEG', margin, 20, imgWidth, imgHeight);
-                pdf.save(`SaveTheDate_Dika_Emilia.pdf`);
-                showToast('✨ Carton d\'invitation PDF enregistré');
-            } else if (choice === 'png') {
-                const link = document.createElement('a');
-                link.download = `SaveTheDate_Dika_Emilia.png`;
-                link.href = canvas.toDataURL('image/png', 1.0);
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                showToast('✅ Image de l\'invitation téléchargée');
-            }
-        } catch(e) {
-            console.error(e);
-            showToast('❌ Une erreur est survenue lors du téléchargement', 'error');
-        } finally {
-            renderContainer.remove();
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-        }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const input = document.getElementById('matriculeInput');
-        const btnVerif = document.getElementById('btnVerifier');
-        const errorMsg = document.getElementById('errorMessage');
-        
-        input.addEventListener('input', function(e) { this.value = this.value.replace(/[^0-9]/g, '').slice(0,4); });
-        input.addEventListener('keypress', e => { if(e.key === 'Enter') btnVerif.click(); });
-        
-        btnVerif.addEventListener('click', async () => {
-            const matricule = input.value.trim();
-            errorMsg.innerText = '';
-            if (!matricule || matricule.length !== 4) {
-                errorMsg.innerText = '⚠️ Code invalide (4 chiffres attendus)';
-                return;
+    return null;
+}
+
+
+/* =============================================================
+   RECHERCHE DE LA TABLE
+============================================================= */
+
+async function getTableAssigned(invite) {
+
+    try {
+
+        const tableQuery =
+            db.collection("tables");
+
+
+        if (invite.familleId) {
+
+            const result =
+                await tableQuery
+                    .where("familleId", "==", invite.familleId)
+                    .limit(1)
+                    .get();
+
+            if (!result.empty) {
+                return result.docs[0].data();
             }
-            btnVerif.disabled = true;
-            btnVerif.innerHTML = 'Recherche...';
-            try {
-                if (!firebaseInitialized) throw new Error('Déconnecté');
-                const invite = await rechercherInvite(matricule);
-                if (!invite) { errorMsg.innerText = `❌ Aucun invité trouvé pour le matricule ${matricule}`; return; }
-                await afficherInvitation(invite);
-            } catch(err) { errorMsg.innerText = '❌ Problème de connexion avec Firebase'; }
-            finally { btnVerif.disabled = false; btnVerif.innerHTML = 'Découvrir l\'invitation'; }
-        });
-        
-        document.getElementById('btnDownload').addEventListener('click', telechargerInvitation);
-        document.getElementById('btnBack').addEventListener('click', cacherInvitation);
-    });
-</script>
-   <script>
-        // Enregistrement du Service Worker
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('firebase-messaging-sw.js')
-                    .then(reg => console.log('✅ Service Worker push enregistré:', reg.scope))
-                    .catch(err => console.log('❌ Erreur Service Worker push:', err));
-                navigator.serviceWorker.register('sw.js')
-                    .then(reg => console.log('✅ SW principal enregistré:', reg.scope))
-                    .catch(err => console.log('❌ Erreur SW principal:', err));
-            });
         }
-        
-        console.log('🚀 Page de connexion parent - Redirection immédiate si déjà connecté');
-    </script>
+
+
+        if (invite.parenteId) {
+
+            const result =
+                await tableQuery
+                    .where("parenteId", "==", invite.parenteId)
+                    .limit(1)
+                    .get();
+
+            if (!result.empty) {
+                return result.docs[0].data();
+            }
+        }
+
+
+        if (invite.familleNom) {
+
+            const result =
+                await tableQuery
+                    .where("familleNom", "==", invite.familleNom)
+                    .limit(1)
+                    .get();
+
+            if (!result.empty) {
+                return result.docs[0].data();
+            }
+        }
+
+        return null;
+
+    } catch (error) {
+
+        console.warn(
+            "Impossible de récupérer la table :",
+            error
+        );
+
+        return null;
+    }
+}
+
+
+/* =============================================================
+   AFFICHER L'INVITATION
+============================================================= */
+
+async function afficherInvitation(invite) {
+
+    document
+        .getElementById("searchCard")
+        .style.display = "none";
+
+
+    const displayDiv =
+        document.getElementById("invitationDisplay");
+
+    displayDiv.classList.remove("hidden");
+
+    displayDiv.style.animation =
+        "fadeInUp .5s ease-out";
+
+
+    /*
+       NOM DE L'INVITÉ
+    */
+
+    const nom =
+        invite.nomComplet ||
+        invite.nom ||
+        "Invité d'Honneur";
+
+    document
+        .getElementById("guestNameDisplay")
+        .innerText = nom;
+
+
+    /*
+       MATRICULE
+    */
+
+    document
+        .getElementById("matriculeDisplay")
+        .innerText =
+        "MATRICULE : " +
+        (invite.matricule || "0000");
+
+
+    /*
+       TABLE
+    */
+
+    const table =
+        await getTableAssigned(invite);
+
+    const tableElement =
+        document.getElementById("tableDisplay");
+
+
+    const nomTable = table && table.nom
+        ? "TABLE " + String(table.nom).toUpperCase()
+        : "TABLE D'HONNEUR";
+
+    tableElement.innerText = nomTable;
+
+
+    /*
+       Scroll
+    */
+
+    requestAnimationFrame(() => dessinerAfficheCanvas({
+        ...invite,
+        nomTable
+    }));
+
+    setTimeout(() => {
+
+        displayDiv.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+    }, 100);
+}
+
+
+/* =============================================================
+   CACHER L'INVITATION
+============================================================= */
+
+function cacherInvitation() {
+
+    document
+        .getElementById("invitationDisplay")
+        .classList.add("hidden");
+
+    document
+        .getElementById("searchCard")
+        .style.display = "block";
+
+    document
+        .getElementById("matriculeInput")
+        .value = "";
+
+    document
+        .getElementById("errorMessage")
+        .innerText = "";
+
+    setTimeout(() => {
+
+        document
+            .getElementById("matriculeInput")
+            .focus();
+
+    }, 200);
+}
+
+
+/* =============================================================
+   CHOIX DU FORMAT
+============================================================= */
+
+function showDownloadChoice() {
+
+    return new Promise((resolve) => {
+
+        const modal =
+            document.createElement("div");
+
+        modal.className = "modal-view";
+
+        modal.innerHTML = `
+
+            <div class="modal-view-box">
+
+                <h3>
+                    Format d'exportation
+                </h3>
+
+                <button
+                    class="act-pdf"
+                    id="btnFormatPDF"
+                >
+                    Télécharger en PDF HD
+                </button>
+
+                <button
+                    class="act-png"
+                    id="btnFormatPNG"
+                >
+                    Télécharger en Image PNG HD
+                </button>
+
+                <button
+                    id="btnCancelDownload"
+                    style="
+                        background:none;
+                        border:none;
+                        color:#999;
+                        margin-top:12px;
+                        font-size:13px;
+                    "
+                >
+                    Annuler
+                </button>
+
+            </div>
+
+        `;
+
+        document.body.appendChild(modal);
+
+
+        document
+            .getElementById("btnFormatPDF")
+            .onclick = () => {
+
+                modal.remove();
+
+                resolve("pdf");
+            };
+
+
+        document
+            .getElementById("btnFormatPNG")
+            .onclick = () => {
+
+                modal.remove();
+
+                resolve("png");
+            };
+
+
+        document
+            .getElementById("btnCancelDownload")
+            .onclick = () => {
+
+                modal.remove();
+
+                resolve(null);
+            };
+
+    });
+}
+
+
+/* =============================================================
+   TÉLÉCHARGEMENT DE L'AFFICHE
+============================================================= */
+
+async function telechargerInvitation() {
+
+    const choice =
+        await showDownloadChoice();
+
+    if (!choice) {
+        return;
+    }
+
+
+    const card =
+        document.getElementById("invitationCard");
+
+    const button =
+        document.getElementById("btnDownload");
+
+    const originalText =
+        button.innerHTML;
+
+
+    button.innerHTML =
+        '<i class="bi bi-hourglass-split"></i> Préparation...';
+
+    button.disabled = true;
+
+
+    /*
+       On crée une copie invisible avec les
+       dimensions HD de l'affiche.
+    */
+
+    const renderContainer =
+        document.createElement("div");
+
+    renderContainer.style.position =
+        "fixed";
+
+    renderContainer.style.left =
+        "-10000px";
+
+    renderContainer.style.top =
+        "0";
+
+    renderContainer.style.width =
+        "900px";
+
+    renderContainer.style.background =
+        "transparent";
+
+    renderContainer.style.padding =
+        "0";
+
+    document.body.appendChild(
+        renderContainer
+    );
+
+
+    const clone =
+        card.cloneNode(true);
+
+    clone.classList.add(
+        "export-mode"
+    );
+
+    renderContainer.appendChild(
+        clone
+    );
+
+    // Un canvas cloné ne conserve pas son bitmap : on le redessine avant l’export.
+    dessinerAfficheCanvas(null, clone.querySelector("#posterCanvas"));
+
+
+    try {
+
+        /*
+           Laisser le navigateur terminer
+           le rendu de la photo locale.
+        */
+
+        await new Promise(
+            resolve => setTimeout(resolve, 400)
+        );
+
+
+        const canvas =
+            await html2canvas(
+                clone,
+                {
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: "#d0c0ae",
+                    logging: false,
+                    imageTimeout: 15000
+                }
+            );
+
+
+        if (choice === "png") {
+
+            const image =
+                canvas.toDataURL(
+                    "image/png",
+                    1
+                );
+
+
+            const link =
+                document.createElement("a");
+
+            link.download =
+                "Invitation_Taylor_Meta_IA.png";
+
+            link.href = image;
+
+            document.body.appendChild(link);
+
+            link.click();
+
+            link.remove();
+
+            showToast(
+                "✨ Invitation PNG HD enregistrée"
+            );
+        }
+
+
+        if (choice === "pdf") {
+
+            const {
+                jsPDF
+            } = window.jspdf;
+
+
+            const pdf =
+                new jsPDF({
+                    orientation: "portrait",
+                    unit: "mm",
+                    format: "a4"
+                });
+
+
+            const pageWidth =
+                pdf.internal.pageSize.getWidth();
+
+            const pageHeight =
+                pdf.internal.pageSize.getHeight();
+
+
+            /*
+               On garde les proportions exactes
+               de l'affiche.
+            */
+
+            const imageRatio =
+                canvas.height /
+                canvas.width;
+
+
+            let imageWidth =
+                pageWidth - 20;
+
+            let imageHeight =
+                imageWidth * imageRatio;
+
+
+            if (imageHeight >
+                pageHeight - 20) {
+
+                imageHeight =
+                    pageHeight - 20;
+
+                imageWidth =
+                    imageHeight /
+                    imageRatio;
+            }
+
+
+            const x =
+                (pageWidth - imageWidth) / 2;
+
+            const y =
+                (pageHeight - imageHeight) / 2;
+
+
+            pdf.addImage(
+                canvas.toDataURL(
+                    "image/jpeg",
+                    1
+                ),
+                "JPEG",
+                x,
+                y,
+                imageWidth,
+                imageHeight
+            );
+
+
+            pdf.save(
+                "Invitation_Taylor_Meta_IA.pdf"
+            );
+
+
+            showToast(
+                "✨ Invitation PDF HD enregistrée"
+            );
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Erreur export :",
+            error
+        );
+
+        showToast(
+            "❌ Impossible de générer l'invitation",
+            "error"
+        );
+
+    } finally {
+
+        renderContainer.remove();
+
+        button.innerHTML =
+            originalText;
+
+        button.disabled = false;
+    }
+}
+
+
+/* =============================================================
+   AFFICHAGE LOCAL DE L’AFFICHE — COMPOSITION CANVAS
+============================================================= */
+
+function dessinerAfficheCanvas(invite = null, canvas = document.getElementById("posterCanvas")) {
+    if (!canvas || !canvas.parentElement) return;
+
+    const card = canvas.parentElement;
+    const rect = card.getBoundingClientRect();
+    const dpr = Math.max(1, window.devicePixelRatio || 1);
+    const w = rect.width;
+    const h = rect.height;
+    canvas.width = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
+    const ctx = canvas.getContext("2d");
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+
+    // textContent fonctionne aussi lorsque les éléments DOM sont masqués
+    // pour laisser le Canvas prendre en charge le rendu visuel.
+    const text = id => card.querySelector(`#${id}`)?.textContent.trim() || "";
+    const guestName = invite?.nomComplet || invite?.nom || text("guestNameDisplay") || "Invité d’Honneur";
+    const matricule = invite?.matricule || (text("matriculeDisplay").replace(/MATRICULE\s*:\s*/i, "")) || "0000";
+    const tableName = invite?.nomTable || text("tableDisplay") || "TABLE D’HONNEUR";
+    const coupleName = invite?.coupleNom || "Taylor & Meta IA";
+    const brown = "#5b4437";
+    const gold = "#9a6c32";
+
+    function drawCover(image, x, y, width, height) {
+        const scale = Math.max(width / image.width, height / image.height);
+        const sw = width / scale;
+        const sh = height / scale;
+        const sx = (image.width - sw) / 2;
+        const sy = image.height * .08;
+        ctx.drawImage(image, sx, sy, sw, sh, x, y, width, height);
+    }
+
+    function centerText(value, y, font, color = brown) {
+        ctx.font = font;
+        ctx.fillStyle = color;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(value, w / 2, y);
+    }
+
+    function columnText(value, x, y, font, color = brown) {
+        ctx.font = font;
+        ctx.fillStyle = color;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(value, x, y);
+    }
+
+    function fitCenter(value, y, maxWidth, font, color = brown) {
+        let size = parseFloat(font.match(/([0-9.]+)px/)?.[1] || 20);
+        const family = font.replace(/bold |italic |[0-9.]+px /g, "");
+        do {
+            ctx.font = font.replace(/[0-9.]+px/, `${size}px`);
+            size -= 1;
+        } while (ctx.measureText(value).width > maxWidth && size > 10);
+        centerText(value, y, ctx.font, color);
+        void family;
+    }
+
+    const image = new Image();
+    image.onload = () => {
+        // Zone photo : elle est ajoutée localement au-dessus du fond vierge.
+        ctx.save();
+        // La photo reste dans la fenêtre centrale et ne recouvre jamais
+        // les bouquets décoratifs situés dans les angles supérieurs.
+        const photoX = w * .085;
+        const photoY = h * .018;
+        const photoW = w * .83;
+        const photoH = h * .355;
+        ctx.beginPath();
+        ctx.roundRect(photoX, photoY, photoW, photoH, Math.max(8, w * .018));
+        ctx.clip();
+        drawCover(image, photoX, photoY, photoW, photoH);
+        ctx.restore();
+        ctx.strokeStyle = "rgba(181,137,73,.72)";
+        ctx.lineWidth = Math.max(1, w * .003);
+        ctx.strokeRect(photoX, photoY, photoW, photoH);
+
+        // Voile crème et vague inférieure qui préservent la lisibilité.
+        const veil = ctx.createLinearGradient(0, h * .28, 0, h * .46);
+        veil.addColorStop(0, "rgba(245,225,205,0)");
+        veil.addColorStop(1, "rgba(247,235,218,.98)");
+        ctx.fillStyle = veil;
+        ctx.fillRect(photoX, h * .25, photoW, h * .21);
+
+        ctx.fillStyle = "#f8eddf";
+        ctx.beginPath();
+        ctx.moveTo(0, h * .375);
+        ctx.quadraticCurveTo(w * .25, h * .40, w * .5, h * .47);
+        ctx.quadraticCurveTo(w * .75, h * .40, w, h * .375);
+        ctx.lineTo(w, h * .50);
+        ctx.lineTo(0, h * .50);
+        ctx.closePath();
+        ctx.fill();
+
+        fitCenter(coupleName, h * .405, w * .88, "500 46px 'Alex Brush', cursive", "#ad7836");
+        centerText("NOUS AVONS LE PLAISIR DE", h * .455, "600 11px Montserrat, sans-serif", brown);
+        centerText("vous inviter", h * .485, "italic 34px 'Cormorant Garamond', serif", "#b47b3b");
+
+        ctx.strokeStyle = "rgba(154,114,89,.45)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(w * .14, h * .535); ctx.lineTo(w * .86, h * .535); ctx.stroke();
+        centerText("♥", h * .535, "28px Georgia, serif", "#b27a2d");
+
+        fitCenter(guestName.toUpperCase(), h * .585, w * .82, "600 22px Montserrat, sans-serif", brown);
+        fitCenter(`MATRICULE : ${matricule} · ${tableName}`, h * .625, w * .84, "500 9px Montserrat, sans-serif", "#bd806e");
+
+        ctx.strokeStyle = "rgba(180,115,90,.42)";
+        ctx.beginPath(); ctx.moveTo(w * .14, h * .655); ctx.lineTo(w * .86, h * .655); ctx.stroke();
+        // Date en trois colonnes, comme sur l’affiche originale.
+        ctx.strokeStyle = "rgba(154,114,89,.55)";
+        ctx.beginPath();
+        ctx.moveTo(w * .33, h * .675); ctx.lineTo(w * .33, h * .765);
+        ctx.moveTo(w * .67, h * .675); ctx.lineTo(w * .67, h * .765);
+        ctx.stroke();
+        columnText("À", w * .17, h * .685, "10px Montserrat, sans-serif", brown);
+        columnText("19.00", w * .17, h * .735, "18px Montserrat, sans-serif", brown);
+        centerText("25", h * .715, "600 54px 'Cormorant Garamond', serif", brown);
+        centerText("septembre", h * .755, "italic 18px 'Cormorant Garamond', serif", brown);
+        columnText("2026", w * .83, h * .715, "18px Montserrat, sans-serif", brown);
+
+        centerText("SALLE POLYVALENTE :", h * .805, "700 15px Montserrat, sans-serif", brown);
+        centerText("KALUBWE PLAZZA", h * .835, "700 15px Montserrat, sans-serif", brown);
+        centerText("AV BIAYI / du soleil N°14", h * .872, "italic 15px 'Cormorant Garamond', serif", "#806554");
+        centerText("  0971877758", h * .915, "500 14px Montserrat, sans-serif", gold);
+        centerText("Que votre présence illumine cette journée", h * .958, "italic 14px 'Cormorant Garamond', serif", brown);
+        centerText("de joie et de bonheur", h * .982, "italic 14px 'Cormorant Garamond', serif", brown);
+    };
+    image.onerror = () => console.warn("Photo locale th.png introuvable");
+    image.src = "th.png";
+}
+
+window.addEventListener("resize", () => {
+    if (!document.getElementById("invitationDisplay")?.classList.contains("hidden")) {
+        dessinerAfficheCanvas();
+    }
+});
+
+/* =============================================================
+   ORNEMENTS FLORAUX — CANVAS DESIGN
+============================================================= */
+
+function dessinerFleur(ctx, x, y, rayon, rotation = 0) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(rotation);
+
+    const petales = 8;
+    for (let i = 0; i < petales; i++) {
+        ctx.save();
+        ctx.rotate((Math.PI * 2 * i) / petales);
+        const gradient = ctx.createRadialGradient(0, -rayon * .65, rayon * .05, 0, -rayon * .65, rayon * .85);
+        gradient.addColorStop(0, "#fffdf8");
+        gradient.addColorStop(.58, "#f8ead7");
+        gradient.addColorStop(1, "#d7b27b");
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.ellipse(0, -rayon * .62, rayon * .36, rayon * .72, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+    }
+
+    const centre = ctx.createRadialGradient(-rayon * .12, -rayon * .12, 1, 0, 0, rayon * .27);
+    centre.addColorStop(0, "#fff4cf");
+    centre.addColorStop(.55, "#d89c43");
+    centre.addColorStop(1, "#9b6124");
+    ctx.fillStyle = centre;
+    ctx.beginPath();
+    ctx.arc(0, 0, rayon * .24, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+}
+
+function dessinerFeuille(ctx, x, y, longueur, angle) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    const gradient = ctx.createLinearGradient(0, 0, longueur, 0);
+    gradient.addColorStop(0, "#8f632d");
+    gradient.addColorStop(.45, "#e6c27f");
+    gradient.addColorStop(1, "#fff1c7");
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.quadraticCurveTo(longueur * .45, -longueur * .24, longueur, 0);
+    ctx.quadraticCurveTo(longueur * .45, longueur * .24, 0, 0);
+    ctx.fill();
+    ctx.strokeStyle = "rgba(129,83,31,.65)";
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(longueur, 0);
+    ctx.stroke();
+    ctx.restore();
+}
+
+function dessinerBranche(ctx, x, y, longueur, angle, sens = 1) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.strokeStyle = "#b88645";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.quadraticCurveTo(longueur * .45, sens * 18, longueur, sens * 5);
+    ctx.stroke();
+    for (let i = 0; i < 5; i++) {
+        const px = longueur * (.18 + i * .17);
+        const py = sens * (8 + i * 2);
+        dessinerFeuille(ctx, px, py, 22 - i * 2, sens * (-.9 + i * .08));
+        dessinerFeuille(ctx, px + 4, py, 18 - i, sens * (1.9 - i * .06));
+    }
+    ctx.restore();
+}
+
+function dessinerOrnementsFloraux(canvas = document.getElementById("floralCanvas")) {
+    if (!canvas) return;
+    const rect = canvas.parentElement.getBoundingClientRect();
+    const dpr = Math.max(1, window.devicePixelRatio || 1);
+    canvas.width = Math.round(rect.width * dpr);
+    canvas.height = Math.round(rect.height * dpr);
+    const ctx = canvas.getContext("2d");
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, rect.width, rect.height);
+
+    const w = rect.width;
+    const h = rect.height;
+    const r = Math.max(25, Math.min(58, w * .14));
+    const topY = Math.max(42, w * .10);
+    const bottomY = h - Math.max(34, w * .075);
+
+    ctx.globalAlpha = .96;
+    dessinerBranche(ctx, 12, topY + r * .9, w * .28, -.45, 1);
+    dessinerBranche(ctx, w - 12, topY + r * .9, w * .28, Math.PI + .45, -1);
+    dessinerFleur(ctx, r * 1.15, topY, r, -.12);
+    dessinerFleur(ctx, w - r * 1.15, topY, r, .12);
+    dessinerFleur(ctx, r * .75, topY + r * 1.12, r * .64, -.18);
+    dessinerFleur(ctx, w - r * .75, topY + r * 1.12, r * .64, .18);
+
+    dessinerBranche(ctx, 10, bottomY - r * .55, w * .23, .48, -1);
+    dessinerBranche(ctx, w - 10, bottomY - r * .55, w * .23, Math.PI - .48, 1);
+    dessinerFleur(ctx, r * .9, bottomY, r * .82, .08);
+    dessinerFleur(ctx, w - r * .9, bottomY, r * .82, -.08);
+
+    // Fines tiges verticales pour relier élégamment les bouquets aux bords.
+    ctx.globalAlpha = .72;
+    dessinerBranche(ctx, 9, topY + r * 1.9, h * .28, Math.PI / 2, 1);
+    dessinerBranche(ctx, w - 9, topY + r * 1.9, h * .28, Math.PI / 2, -1);
+}
+
+window.addEventListener("resize", () => dessinerOrnementsFloraux());
+
+/* =============================================================
+   DOM READY
+============================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        const input =
+            document.getElementById(
+                "matriculeInput"
+            );
+
+        const verifyButton =
+            document.getElementById(
+                "btnVerifier"
+            );
+
+        const errorMessage =
+            document.getElementById(
+                "errorMessage"
+            );
+
+
+        /*
+           Autoriser uniquement les chiffres
+        */
+
+        input.addEventListener(
+            "input",
+            function () {
+
+                this.value =
+                    this.value
+                        .replace(/[^0-9]/g, "")
+                        .slice(0, 4);
+
+            }
+        );
+
+
+        /*
+           Entrée clavier
+        */
+
+        input.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (event.key === "Enter") {
+
+                    verifyButton.click();
+
+                }
+
+            }
+        );
+
+
+        /*
+           Vérification
+        */
+
+        verifyButton.addEventListener(
+            "click",
+            async () => {
+
+                const matricule =
+                    input.value.trim();
+
+                errorMessage.innerText =
+                    "";
+
+
+                if (
+                    !matricule ||
+                    matricule.length !== 4
+                ) {
+
+                    errorMessage.innerText =
+                        "⚠️ Code invalide : 4 chiffres attendus.";
+
+                    return;
+                }
+
+
+                verifyButton.disabled =
+                    true;
+
+                verifyButton.innerHTML =
+                    '<i class="bi bi-search"></i> Recherche...';
+
+
+                try {
+
+                    if (!firebaseInitialized) {
+
+                        throw new Error(
+                            "Firebase indisponible"
+                        );
+
+                    }
+
+
+                    const invite =
+                        await rechercherInvite(
+                            matricule
+                        );
+
+
+                    if (!invite) {
+
+                        errorMessage.innerText =
+                            "❌ Aucun invité trouvé pour le matricule " +
+                            matricule;
+
+                        return;
+                    }
+
+
+                    await afficherInvitation(
+                        invite
+                    );
+
+
+                } catch (error) {
+
+                    console.error(error);
+
+                    errorMessage.innerText =
+                        "❌ Problème de connexion avec Firebase.";
+
+                } finally {
+
+                    verifyButton.disabled =
+                        false;
+
+                    verifyButton.innerHTML =
+                        "Découvrir l'invitation";
+
+                }
+
+            }
+        );
+
+
+        /*
+           Télécharger
+        */
+
+        document
+            .getElementById("btnDownload")
+            .addEventListener(
+                "click",
+                telechargerInvitation
+            );
+
+
+        /*
+           Retour
+        */
+
+        document
+            .getElementById("btnBack")
+            .addEventListener(
+                "click",
+                cacherInvitation
+            );
+
+    }
+);
+</script>
+
+
+<!-- =============================================================
+     SERVICE WORKER
+============================================================= -->
+
+<script>
+
+if ("serviceWorker" in navigator) {
+
+    window.addEventListener(
+        "load",
+        () => {
+
+            navigator.serviceWorker
+                .register(
+                    "firebase-messaging-sw.js"
+                )
+                .then(
+                    registration => {
+
+                        console.log(
+                            "✅ Service Worker Firebase :",
+                            registration.scope
+                        );
+
+                    }
+                )
+                .catch(
+                    error => {
+
+                        console.log(
+                            "❌ Erreur Firebase SW :",
+                            error
+                        );
+
+                    }
+                );
+
+
+            navigator.serviceWorker
+                .register("sw.js")
+                .then(
+                    registration => {
+
+                        console.log(
+                            "✅ Service Worker principal :",
+                            registration.scope
+                        );
+
+                    }
+                )
+                .catch(
+                    error => {
+
+                        console.log(
+                            "❌ Erreur SW principal :",
+                            error
+                        );
+
+                    }
+                );
+
+        }
+    );
+
+}
+
+</script>
+
 </body>
 </html>
