@@ -317,6 +317,32 @@
             pointer-events: none;
         }
 
+        /* Zones tactiles transparentes alignées sur les informations
+           dessinées dans le Canvas. */
+        .poster-hotspot {
+            position: absolute;
+            z-index: 12;
+            display: block;
+            border-radius: 12px;
+            background: transparent;
+            cursor: pointer;
+            -webkit-tap-highlight-color: rgba(154,114,89,.18);
+        }
+
+        .poster-hotspot.phone {
+            left: 25%;
+            right: 25%;
+            top: 89.5%;
+            height: 4.5%;
+        }
+
+        .poster-hotspot.location {
+            left: 10%;
+            right: 10%;
+            top: 78%;
+            height: 10%;
+        }
+
         /* Le fond image porte déjà la mise en page fixe ; le DOM reste
            disponible pour Firebase mais les zones variables sont dessinées
            une seule fois par Canvas. */
@@ -822,6 +848,16 @@
 
             <!-- Affiche locale + composition dynamique Canvas -->
             <canvas class="poster-canvas" id="posterCanvas" aria-hidden="true"></canvas>
+
+            <!-- Liens tactiles superposés à l’affiche -->
+            <a class="poster-hotspot location"
+               href="https://www.google.com/maps/search/?api=1&query=KALUBWE+PLAZZA+AV+BIAYI+du+soleil+N14"
+               target="_blank"
+               rel="noopener"
+               aria-label="Ouvrir la localisation dans Google Maps"></a>
+            <a class="poster-hotspot phone"
+               href="tel:+243971877758"
+               aria-label="Appeler le 0971877758"></a>
 
 
             <!-- =================================================
@@ -1661,13 +1697,94 @@ function dessinerAfficheCanvas(invite = null, canvas = document.getElementById("
 
     function fitCenter(value, y, maxWidth, font, color = brown) {
         let size = parseFloat(font.match(/([0-9.]+)px/)?.[1] || 20);
-        const family = font.replace(/bold |italic |[0-9.]+px /g, "");
         do {
             ctx.font = font.replace(/[0-9.]+px/, `${size}px`);
             size -= 1;
         } while (ctx.measureText(value).width > maxWidth && size > 10);
         centerText(value, y, ctx.font, color);
-        void family;
+    }
+
+    function shinyCenter(value, y, maxWidth, font) {
+        let size = parseFloat(font.match(/([0-9.]+)px/)?.[1] || 20);
+        do {
+            ctx.font = font.replace(/[0-9.]+px/, `${size}px`);
+            size -= 1;
+        } while (ctx.measureText(value).width > maxWidth && size > 10);
+
+        const largeur = ctx.measureText(value).width;
+        const gradient = ctx.createLinearGradient((w - largeur) / 2, y - 25, (w + largeur) / 2, y + 25);
+        // Doré lumineux mais maîtrisé pour garder le nom parfaitement lisible.
+        gradient.addColorStop(0, "#8b571d");
+        gradient.addColorStop(.28, "#c88a32");
+        gradient.addColorStop(.46, "#f4d98a");
+        gradient.addColorStop(.55, "#ffeeb1");
+        gradient.addColorStop(.70, "#c88a32");
+        gradient.addColorStop(1, "#8b571d");
+
+        ctx.save();
+        ctx.font = font.replace(/[0-9.]+px/, `${size}px`);
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.shadowColor = "rgba(111,67,19,.26)";
+        ctx.shadowBlur = 2;
+        ctx.shadowOffsetY = 1;
+        ctx.fillStyle = gradient;
+        ctx.fillText(value, w / 2, y);
+        ctx.shadowColor = "transparent";
+        ctx.shadowBlur = 0;
+        ctx.strokeStyle = "rgba(125,76,21,.48)";
+        ctx.lineWidth = .8;
+        ctx.strokeText(value, w / 2, y);
+        ctx.restore();
+
+        // Deux petits éclats pour accentuer l’effet brillant sans gêner le texte.
+        const sparkle = (x, sy, s) => {
+            ctx.save();
+            ctx.fillStyle = "rgba(255,247,190,.95)";
+            ctx.shadowColor = "rgba(211,155,54,.75)";
+            ctx.shadowBlur = 6;
+            ctx.beginPath();
+            ctx.moveTo(x, sy - s); ctx.lineTo(x + s * .35, sy - s * .35);
+            ctx.lineTo(x + s, sy); ctx.lineTo(x + s * .35, sy + s * .35);
+            ctx.lineTo(x, sy + s); ctx.lineTo(x - s * .35, sy + s * .35);
+            ctx.lineTo(x - s, sy); ctx.lineTo(x - s * .35, sy - s * .35);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+        };
+        sparkle(Math.max(18, (w - largeur) / 2 - 8), y - 13, 2);
+        sparkle(Math.min(w - 18, (w + largeur) / 2 + 8), y + 8, 1.7);
+    }
+
+    function dessinerCoeur(ctx, x, y, s, color) {
+        ctx.save();
+        ctx.fillStyle = color;
+        ctx.shadowColor = "rgba(122,75,20,.22)";
+        ctx.shadowBlur = 2;
+        ctx.beginPath();
+        ctx.moveTo(x, y + s * .82);
+        ctx.bezierCurveTo(x - s * 1.35, y + s * .05, x - s * .72, y - s * .95, x, y - s * .35);
+        ctx.bezierCurveTo(x + s * .72, y - s * .95, x + s * 1.35, y + s * .05, x, y + s * .82);
+        ctx.fill();
+        ctx.restore();
+    }
+
+    function dessinerTelephone(ctx, x, y, s, color) {
+        ctx.save();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = Math.max(2, s * .28);
+        ctx.lineCap = "round";
+        ctx.beginPath();
+        ctx.arc(x, y, s * .72, .72 * Math.PI, 1.42 * Math.PI);
+        ctx.stroke();
+        ctx.lineWidth = Math.max(1.5, s * .18);
+        ctx.beginPath();
+        ctx.moveTo(x - s * .62, y - s * .40);
+        ctx.lineTo(x - s * .92, y - s * .12);
+        ctx.moveTo(x + s * .62, y + s * .40);
+        ctx.lineTo(x + s * .92, y + s * .12);
+        ctx.stroke();
+        ctx.restore();
     }
 
     const image = new Image();
@@ -1706,7 +1823,7 @@ function dessinerAfficheCanvas(invite = null, canvas = document.getElementById("
         ctx.closePath();
         ctx.fill();
 
-        fitCenter(coupleName, h * .405, w * .88, "500 46px 'Alex Brush', cursive", "#ad7836");
+        shinyCenter(coupleName, h * .405, w * .88, "500 46px 'Alex Brush', cursive");
         centerText("NOUS AVONS LE PLAISIR DE", h * .455, "600 11px Montserrat, sans-serif", brown);
         centerText("vous inviter", h * .485, "italic 34px 'Cormorant Garamond', serif", "#b47b3b");
 
@@ -1714,7 +1831,7 @@ function dessinerAfficheCanvas(invite = null, canvas = document.getElementById("
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(w * .14, h * .535); ctx.lineTo(w * .86, h * .535); ctx.stroke();
-        centerText("♥", h * .535, "28px Georgia, serif", "#b27a2d");
+        dessinerCoeur(ctx, w / 2, h * .535, Math.max(11, w * .035), "#b27a2d");
 
         fitCenter(guestName.toUpperCase(), h * .585, w * .82, "600 22px Montserrat, sans-serif", brown);
         fitCenter(`MATRICULE : ${matricule} · ${tableName}`, h * .625, w * .84, "500 9px Montserrat, sans-serif", "#bd806e");
@@ -1736,7 +1853,8 @@ function dessinerAfficheCanvas(invite = null, canvas = document.getElementById("
         centerText("SALLE POLYVALENTE :", h * .805, "700 15px Montserrat, sans-serif", brown);
         centerText("KALUBWE PLAZZA", h * .835, "700 15px Montserrat, sans-serif", brown);
         centerText("AV BIAYI / du soleil N°14", h * .872, "italic 15px 'Cormorant Garamond', serif", "#806554");
-        centerText("  0971877758", h * .915, "500 14px Montserrat, sans-serif", gold);
+        dessinerTelephone(ctx, w / 2 - 48, h * .915, Math.max(12, w * .035), gold);
+        columnText("0971877758", w / 2 + 18, h * .915, "500 14px Montserrat, sans-serif", gold);
         centerText("Que votre présence illumine cette journée", h * .958, "italic 14px 'Cormorant Garamond', serif", brown);
         centerText("de joie et de bonheur", h * .982, "italic 14px 'Cormorant Garamond', serif", brown);
     };
